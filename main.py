@@ -7,7 +7,10 @@ from fastapi.staticfiles import StaticFiles
 app = FastAPI()
 
 # Set a strong secret token (match this in your GitHub Secrets)
-DEPLOY_SECRET = os.environ.get("DEPLOY_SECRET", "change-this-to-a-long-random-secret")
+DEPLOY_SECRET = os.environ.get("DEPLOY_SECRET")
+if not DEPLOY_SECRET:
+    raise RuntimeError("环境变量 DEPLOY_SECRET 未设置，拒绝启动！")
+
 SITE_DIR = "site_dist"
 
 os.makedirs(SITE_DIR, exist_ok=True)
